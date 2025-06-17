@@ -1,0 +1,179 @@
+<UserControl
+    x:Class="FluentIcons.Gallery.Views.MainView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:common="clr-namespace:FluentIcons.Common;assembly=FluentIcons.Common"
+    xmlns:converters="clr-namespace:FluentIcons.Gallery.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:icons="clr-namespace:FluentIcons.Avalonia;assembly=FluentIcons.Avalonia"
+    xmlns:local="clr-namespace:FluentIcons.Gallery.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:u="https://irihi.tech/ursa"
+    xmlns:vm="clr-namespace:FluentIcons.Gallery.ViewModels"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:DataType="vm:MainViewModel"
+    mc:Ignorable="d">
+    <Design.DataContext>
+        <vm:MainViewModel />
+    </Design.DataContext>
+
+    <Interaction.Behaviors>
+        <AdaptiveBehavior SourceControl="{Binding $parent[TopLevel]}">
+            <AdaptiveClassSetter
+                MinWidth="0"
+                MaxWidth="800"
+                ClassName="small" />
+            <AdaptiveClassSetter
+                MinWidth="800"
+                MaxWidth="Infinity"
+                ClassName="wide" />
+        </AdaptiveBehavior>
+    </Interaction.Behaviors>
+
+    <UserControl.Resources>
+        <converters:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
+    </UserControl.Resources>
+
+    <UserControl.Styles>
+        <Style Selector=":small Grid.adaptive">
+            <Setter Property="Background" Value="Red" />
+        </Style>
+        <Style Selector=":wide Grid.adaptive">
+            <Setter Property="Background" Value="Black" />
+        </Style>
+    </UserControl.Styles>
+
+    <Grid Classes="adaptive" ColumnDefinitions="2*,4,*">
+        <!--  Icons List  -->
+        <Grid RowDefinitions="auto,*">
+            <ContentPresenter
+                Grid.Row="0"
+                Padding="12"
+                Background="{DynamicResource SemiColorBackground1}">
+                <ContentPresenter.Content>
+                    <Grid ColumnDefinitions="*,auto" ColumnSpacing="12">
+                        <AutoCompleteBox
+                            Grid.Column="0"
+                            Text="{Binding Query, Mode=TwoWay}"
+                            Watermark="Search..." />
+
+                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                            <RadioButton
+                                Content="Regular"
+                                GroupName="IconVariant"
+                                IsChecked="{Binding IconVariant, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static common:IconVariant.Regular}}"
+                                Theme="{DynamicResource ButtonRadioButton}" />
+                            <RadioButton
+                                Content="Filled"
+                                GroupName="IconVariant"
+                                IsChecked="{Binding IconVariant, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static common:IconVariant.Filled}}"
+                                Theme="{DynamicResource ButtonRadioButton}" />
+                            <RadioButton
+                                Content="Color"
+                                GroupName="IconVariant"
+                                IsChecked="{Binding IconVariant, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static common:IconVariant.Color}}"
+                                Theme="{DynamicResource ButtonRadioButton}" />
+                            <RadioButton
+                                Content="Light"
+                                GroupName="IconVariant"
+                                IsChecked="{Binding IconVariant, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static common:IconVariant.Light}}"
+                                Theme="{DynamicResource ButtonRadioButton}" />
+                        </StackPanel>
+
+                    </Grid>
+                </ContentPresenter.Content>
+
+            </ContentPresenter>
+
+            <ListBox
+                Grid.Row="1"
+                ItemsSource="{Binding DisplayedIcons}"
+                SelectedItem="{Binding Selected, Mode=TwoWay}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate DataType="vm:IconInfo">
+                        <icons:FluentIcon
+                            FontSize="60"
+                            Icon="{Binding Value}"
+                            IconVariant="{Binding $parent[local:MainView].((vm:MainViewModel)DataContext).IconVariant}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <u:ElasticWrapPanel
+                            IsFillHorizontal="True"
+                            ItemHeight="100"
+                            ItemWidth="100" />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+            </ListBox>
+        </Grid>
+
+        <GridSplitter Grid.Column="1" ResizeDirection="Columns" />
+
+        <Grid Grid.Column="2" Background="{DynamicResource SemiColorBackground1}">
+            <ScrollViewer>
+                <StackPanel VerticalAlignment="Center" Spacing="24">
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        FontSize="24"
+                        Text="{Binding Selected.Name}" />
+                    <icons:FluentIcon
+                        FontSize="192"
+                        Icon="{Binding Selected.Value}"
+                        IconVariant="{Binding IconVariant}" />
+                    <StackPanel
+                        HorizontalAlignment="Center"
+                        Orientation="Horizontal"
+                        Spacing="12">
+                        <StackPanel>
+                            <icons:FluentIcon
+                                FontSize="64"
+                                Icon="{Binding Selected.Value}"
+                                IconVariant="Regular" />
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                Foreground="{DynamicResource SemiColorText2}"
+                                Text="Regular" />
+                        </StackPanel>
+                        <StackPanel>
+                            <icons:FluentIcon
+                                FontSize="64"
+                                Icon="{Binding Selected.Value}"
+                                IconVariant="Filled" />
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                Foreground="{DynamicResource SemiColorText2}"
+                                Text="Filled" />
+                        </StackPanel>
+                        <StackPanel>
+                            <icons:FluentIcon
+                                FontSize="64"
+                                Icon="{Binding Selected.Value}"
+                                IconVariant="Color" />
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                Foreground="{DynamicResource SemiColorText2}"
+                                Text="Color" />
+                        </StackPanel>
+                        <StackPanel>
+                            <icons:FluentIcon
+                                FontSize="64"
+                                Icon="{Binding Selected.Value}"
+                                IconVariant="Light" />
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                Foreground="{DynamicResource SemiColorText2}"
+                                Text="Light" />
+                        </StackPanel>
+
+                    </StackPanel>
+
+                </StackPanel>
+
+            </ScrollViewer>
+
+        </Grid>
+    </Grid>
+
+</UserControl>
