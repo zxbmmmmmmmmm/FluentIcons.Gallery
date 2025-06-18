@@ -35,9 +35,10 @@ public partial class MainViewModel : ViewModelBase
     }
     public MainViewModel()
     {
-        DisplayedIcons = Icons = Enum.GetValues<Icon>().Select(
-            p => new IconInfo { Name = p.ToString(), Value = p }
-            ).ToList();
+        DisplayedIcons = Icons = 
+            Enum.GetValues<Icon>()
+            .Select(p => new IconInfo { Name = p.ToString(), Value = p })
+            .ToList();
         Selected = Icons.First();
     }
 
