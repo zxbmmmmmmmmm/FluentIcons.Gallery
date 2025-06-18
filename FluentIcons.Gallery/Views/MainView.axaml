@@ -19,16 +19,18 @@
     </Design.DataContext>
 
     <Interaction.Behaviors>
-        <AdaptiveBehavior SourceControl="{Binding $parent[TopLevel]}">
-            <AdaptiveClassSetter
-                MinWidth="0"
-                MaxWidth="800"
-                ClassName="small" />
-            <AdaptiveClassSetter
-                MinWidth="800"
-                MaxWidth="Infinity"
-                ClassName="wide" />
-        </AdaptiveBehavior>
+        <BehaviorCollection>
+            <AdaptiveBehavior SourceControl="{Binding $parent[TopLevel]}">
+                <AdaptiveClassSetter
+                    MinWidth="0"
+                    MaxWidth="800"
+                    ClassName="small" />
+                <AdaptiveClassSetter
+                    MinWidth="800"
+                    MaxWidth="Infinity"
+                    ClassName="wide" />
+            </AdaptiveBehavior>
+        </BehaviorCollection>
     </Interaction.Behaviors>
 
     <UserControl.Resources>
@@ -44,13 +46,20 @@
             <Setter Property="Background" Value="{DynamicResource SemiColorFill1}" />
             <Setter Property="BorderThickness" Value="0" />
         </Style>
+      <!--
+        <Style Selector="Grid#MainGrid:small">
+            <Setter Property="Background" Value="Red" />
+        </Style>
+        <Style Selector="Grid#MainGrid:wide">
+            <Setter Property="Background" Value="Green" />
+        </Style>-->
     </UserControl.Styles>
 
-    <Grid Classes="adaptive" ColumnDefinitions="2*,4,*">
+    <Grid Name="MainGrid" ColumnDefinitions="2*,4,*">
         <!--  Icons List  -->
         <Grid RowDefinitions="auto,*">
             <ContentPresenter
-                Grid.Row="0"
+                Grid.Row="0" 
                 Padding="12"
                 Background="{DynamicResource SemiColorBackground1}">
                 <ContentPresenter.Content>
