@@ -36,11 +36,13 @@
     </UserControl.Resources>
 
     <UserControl.Styles>
-        <Style Selector=":small Grid.adaptive">
-            <Setter Property="Background" Value="Red" />
+        <Style Selector="ToggleButton:unchecked">
+            <Setter Property="Background" Value="Transparent" />
         </Style>
-        <Style Selector=":wide Grid.adaptive">
-            <Setter Property="Background" Value="Black" />
+        <Style Selector="ToggleButton:checked">
+            <Setter Property="Foreground" Value="{DynamicResource SemiColorText0}" />
+            <Setter Property="Background" Value="{DynamicResource SemiColorFill1}" />
+            <Setter Property="BorderThickness" Value="0" />
         </Style>
     </UserControl.Styles>
 
@@ -91,21 +93,27 @@
                 <ItemsRepeater ItemsSource="{Binding DisplayedIcons}">
                     <ItemsRepeater.ItemTemplate>
                         <DataTemplate DataType="vm:IconInfo">
-                          <ToggleButton Command="{Binding $parent[local:MainView].((vm:MainViewModel)DataContext).SelectIconCommand}"
-                                        CommandParameter="{Binding}"
-                                        IsChecked="{Binding IsSelected}"
-                                        Background="Transparent" Foreground="{DynamicResource SemiColorText0}">
-                              <icons:FluentIcon
-                                  FontSize="60"
-                                  Icon="{Binding Value}"
-                                  IconVariant="{Binding $parent[local:MainView].((vm:MainViewModel)DataContext).IconVariant}" />
-                          </ToggleButton>
+                            <ToggleButton
+                                Margin="4"
+                                Command="{Binding $parent[local:MainView].((vm:MainViewModel)DataContext).SelectIconCommand}"
+                                CommandParameter="{Binding}"
+                                Foreground="{DynamicResource SemiColorText0}"
+                                IsChecked="{Binding IsSelected}">
+                                <icons:FluentIcon
+                                    FontSize="60"
+                                    Icon="{Binding Value}"
+                                    IconVariant="{Binding $parent[local:MainView].((vm:MainViewModel)DataContext).IconVariant}" />
+                            </ToggleButton>
 
                         </DataTemplate>
 
                     </ItemsRepeater.ItemTemplate>
                     <ItemsRepeater.Layout>
-                        <UniformGridLayout MinItemHeight="100" ItemsStretch="Fill" MinItemWidth="100" Orientation="Horizontal" />
+                        <UniformGridLayout
+                            ItemsStretch="Fill"
+                            MinItemHeight="100"
+                            MinItemWidth="100"
+                            Orientation="Horizontal" />
                     </ItemsRepeater.Layout>
                 </ItemsRepeater>
             </ScrollViewer>
