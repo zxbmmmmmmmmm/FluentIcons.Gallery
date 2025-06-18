@@ -86,27 +86,27 @@
 
             </ContentPresenter>
 
-            <ListBox
-                Grid.Row="1"
-                ItemsSource="{Binding DisplayedIcons}"
-                SelectedItem="{Binding Selected, Mode=TwoWay}">
-                <ListBox.ItemTemplate>
-                    <DataTemplate DataType="vm:IconInfo">
-                        <icons:FluentIcon
-                            FontSize="60"
-                            Icon="{Binding Value}"
-                            IconVariant="{Binding $parent[local:MainView].((vm:MainViewModel)DataContext).IconVariant}" />
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-                <ListBox.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <u:ElasticWrapPanel
-                            IsFillHorizontal="True"
-                            ItemHeight="100"
-                            ItemWidth="100" />
-                    </ItemsPanelTemplate>
-                </ListBox.ItemsPanel>
-            </ListBox>
+
+            <ScrollViewer Grid.Row="1">
+                <ItemsRepeater ItemsSource="{Binding DisplayedIcons}">
+                    <ItemsRepeater.ItemTemplate>
+                        <DataTemplate DataType="vm:IconInfo">
+                          <ToggleButton Background="Transparent" Foreground="{DynamicResource SemiColorText0}">
+                              <icons:FluentIcon
+                                  FontSize="60"
+                                  Icon="{Binding Value}"
+                                  IconVariant="{Binding $parent[local:MainView].((vm:MainViewModel)DataContext).IconVariant}" />
+                          </ToggleButton>
+
+                        </DataTemplate>
+
+                    </ItemsRepeater.ItemTemplate>
+                    <ItemsRepeater.Layout>
+                        <UniformGridLayout MinItemHeight="100" ItemsStretch="Fill" MinItemWidth="100" Orientation="Horizontal" />
+                    </ItemsRepeater.Layout>
+                </ItemsRepeater>
+            </ScrollViewer>
+
         </Grid>
 
         <GridSplitter Grid.Column="1" ResizeDirection="Columns" />
