@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using FluentIcons.Common;
 using System;
 using System.Collections.Generic;
@@ -24,6 +25,14 @@ public partial class MainViewModel : ViewModelBase
     [ObservableProperty]
     public partial IconInfo Selected { get;
         set; }
+
+    [RelayCommand]
+    public void SelectIcon(IconInfo icon)
+    {
+        Selected.IsSelected = false;
+        icon.IsSelected = true;
+        Selected = icon;
+    }
     public MainViewModel()
     {
         DisplayedIcons = Icons = Enum.GetValues<Icon>().Select(
@@ -48,10 +57,13 @@ public partial class MainViewModel : ViewModelBase
         return field.IsDefined(typeof(TAttribute), false);
     }
 }
-public record IconInfo
+public partial class IconInfo : ObservableObject
 {
     public required string Name { get; init; }
     public required Icon Value { get; init; }
+
+    [ObservableProperty]
+    public partial bool IsSelected { get; set; }
 
 }
 

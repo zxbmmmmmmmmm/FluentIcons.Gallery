@@ -91,7 +91,10 @@
                 <ItemsRepeater ItemsSource="{Binding DisplayedIcons}">
                     <ItemsRepeater.ItemTemplate>
                         <DataTemplate DataType="vm:IconInfo">
-                          <ToggleButton Background="Transparent" Foreground="{DynamicResource SemiColorText0}">
+                          <ToggleButton Command="{Binding $parent[local:MainView].((vm:MainViewModel)DataContext).SelectIconCommand}"
+                                        CommandParameter="{Binding}"
+                                        IsChecked="{Binding IsSelected}"
+                                        Background="Transparent" Foreground="{DynamicResource SemiColorText0}">
                               <icons:FluentIcon
                                   FontSize="60"
                                   Icon="{Binding Value}"
