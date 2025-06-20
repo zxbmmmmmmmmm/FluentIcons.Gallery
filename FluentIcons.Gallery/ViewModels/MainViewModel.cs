@@ -36,9 +36,12 @@ public partial class MainViewModel : ViewModelBase
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(ItemMinSize))]
     [NotifyPropertyChangedFor(nameof(ItemPadding))]
+    [NotifyPropertyChangedFor(nameof(FontSize))]
     public partial bool IsCompact { get; set; }
 
-    public int ItemMinSize => IsCompact ? 30 : 50;
+    public int ItemMinSize => IsCompact ? 30 : 80;
+
+    public int FontSize => IsCompact ? 18 : 40;
 
     public Thickness ItemPadding => new(IsCompact ? 0 : 4);
 

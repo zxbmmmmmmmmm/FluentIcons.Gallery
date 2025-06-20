@@ -102,7 +102,10 @@
             <ScrollViewer Grid.Row="1">
                 <ItemsRepeater ItemsSource="{Binding DisplayedIcons}">
                     <ItemsRepeater.Layout>
-                        <UniformGridLayout MinItemHeight="{Binding ItemMinSize}" MinItemWidth="{Binding ItemMinSize}" />
+                        <UniformGridLayout
+                            ItemsStretch="Fill"
+                            MinItemHeight="{Binding ItemMinSize}"
+                            MinItemWidth="{Binding ItemMinSize}" />
                     </ItemsRepeater.Layout>
                     <ItemsRepeater.ItemTemplate>
                         <DataTemplate DataType="vm:IconInfo">
@@ -111,9 +114,13 @@
                                 Command="{Binding $parent[local:MainView].((vm:MainViewModel)DataContext).SelectIconCommand}"
                                 CommandParameter="{Binding}"
                                 Foreground="{DynamicResource SemiColorText0}"
+                                CornerRadius="0"
                                 IsChecked="{Binding IsSelected}"
                                 ToolTip.Tip="{Binding Name}">
-                                <icons:SymbolIcon IconVariant="{Binding $parent[local:MainView].((vm:MainViewModel)DataContext).IconVariant}" Symbol="{Binding Value}" />
+                                <icons:SymbolIcon
+                                    FontSize="{Binding $parent[local:MainView].((vm:MainViewModel)DataContext).FontSize}"
+                                    IconVariant="{Binding $parent[local:MainView].((vm:MainViewModel)DataContext).IconVariant}"
+                                    Symbol="{Binding Value}" />
                             </ToggleButton>
                         </DataTemplate>
                     </ItemsRepeater.ItemTemplate>
