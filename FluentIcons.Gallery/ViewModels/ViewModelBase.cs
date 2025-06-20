@@ -1,7 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace FluentIcons.Gallery.ViewModels;
 
-public class ViewModelBase : ObservableObject
-{
-}
+public class ViewModelBase : ObservableObject;

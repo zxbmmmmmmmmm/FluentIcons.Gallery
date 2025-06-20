@@ -7,7 +7,7 @@ namespace FluentIcons.Gallery;
 
 public class ViewLocator : IDataTemplate
 {
-    public Control Build(object data)
+    public Control? Build(object? data)
     {
         if (data is null)
             return null;
@@ -15,10 +15,8 @@ public class ViewLocator : IDataTemplate
         var name = data.GetType().FullName!.Replace("ViewModel", "View");
         var type = Type.GetType(name);
 
-        if (type != null)
-        {
+        if (type is not null)
             return (Control)Activator.CreateInstance(type)!;
-        }
 
         return new TextBlock { Text = name };
     }
