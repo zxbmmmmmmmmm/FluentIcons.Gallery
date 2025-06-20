@@ -6,6 +6,7 @@
     xmlns:converters="clr-namespace:FluentIcons.Gallery.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:icons="clr-namespace:FluentIcons.Avalonia;assembly=FluentIcons.Avalonia"
+    xmlns:iconsExt="clr-namespace:FluentIcons.Avalonia.MarkupExtensions;assembly=FluentIcons.Avalonia"
     xmlns:local="clr-namespace:FluentIcons.Gallery.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:u="https://irihi.tech/ursa"
@@ -46,7 +47,7 @@
             <Setter Property="Background" Value="{DynamicResource SemiColorFill1}" />
             <Setter Property="BorderThickness" Value="0" />
         </Style>
-      <!--
+        <!--
         <Style Selector="Grid#MainGrid:small">
             <Setter Property="Background" Value="Red" />
         </Style>
@@ -57,19 +58,21 @@
 
     <Grid Name="MainGrid" ColumnDefinitions="2*,4,*">
         <!--  Icons List  -->
-        <Grid RowDefinitions="auto,*">
+        <Grid RowDefinitions="Auto,*">
             <ContentPresenter
-                Grid.Row="0" 
+                Grid.Row="0"
                 Padding="12"
                 Background="{DynamicResource SemiColorBackground1}">
                 <ContentPresenter.Content>
-                    <Grid ColumnDefinitions="*,auto" ColumnSpacing="12">
-                        <AutoCompleteBox
-                            Grid.Column="0"
-                            Text="{Binding Query, Mode=TwoWay}"
-                            Watermark="Search..." />
-
-                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <DockPanel HorizontalSpacing="4">
+                        <ToggleButton
+                            Width="35"
+                            Padding="0"
+                            Content="{iconsExt:SymbolIcon Symbol=ArrowMinimizeVertical}"
+                            DockPanel.Dock="Left"
+                            IsChecked="{Binding IsCompact}"
+                            ToolTip.Tip="Compact" />
+                        <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
                             <RadioButton
                                 Content="Regular"
                                 GroupName="IconVariant"
@@ -91,42 +94,31 @@
                                 IsChecked="{Binding IconVariant, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static common:IconVariant.Light}}"
                                 Theme="{DynamicResource ButtonRadioButton}" />
                         </StackPanel>
-
-                    </Grid>
+                        <AutoCompleteBox Text="{Binding Query, Mode=TwoWay}" Watermark="Search..." />
+                    </DockPanel>
                 </ContentPresenter.Content>
-
             </ContentPresenter>
-
 
             <ScrollViewer Grid.Row="1">
                 <ItemsRepeater ItemsSource="{Binding DisplayedIcons}">
+                    <ItemsRepeater.Layout>
+                        <UniformGridLayout MinItemHeight="{Binding ItemMinSize}" MinItemWidth="{Binding ItemMinSize}" />
+                    </ItemsRepeater.Layout>
                     <ItemsRepeater.ItemTemplate>
                         <DataTemplate DataType="vm:IconInfo">
                             <ToggleButton
-                                Margin="4"
+                                Padding="{Binding $parent[local:MainView].((vm:MainViewModel)DataContext).ItemPadding}"
                                 Command="{Binding $parent[local:MainView].((vm:MainViewModel)DataContext).SelectIconCommand}"
                                 CommandParameter="{Binding}"
                                 Foreground="{DynamicResource SemiColorText0}"
-                                IsChecked="{Binding IsSelected}">
-                                <icons:FluentIcon
-                                    FontSize="60"
-                                    Icon="{Binding Value}"
-                                    IconVariant="{Binding $parent[local:MainView].((vm:MainViewModel)DataContext).IconVariant}" />
+                                IsChecked="{Binding IsSelected}"
+                                ToolTip.Tip="{Binding Name}">
+                                <icons:SymbolIcon IconVariant="{Binding $parent[local:MainView].((vm:MainViewModel)DataContext).IconVariant}" Symbol="{Binding Value}" />
                             </ToggleButton>
-
                         </DataTemplate>
-
                     </ItemsRepeater.ItemTemplate>
-                    <ItemsRepeater.Layout>
-                        <UniformGridLayout
-                            ItemsStretch="Fill"
-                            MinItemHeight="100"
-                            MinItemWidth="100"
-                            Orientation="Horizontal" />
-                    </ItemsRepeater.Layout>
                 </ItemsRepeater>
             </ScrollViewer>
-
         </Grid>
 
         <GridSplitter Grid.Column="1" ResizeDirection="Columns" />
@@ -138,62 +130,71 @@
                         HorizontalAlignment="Center"
                         FontSize="24"
                         Text="{Binding Selected.Name}" />
-                    <icons:FluentIcon
+                    <icons:SymbolIcon
                         FontSize="192"
-                        Icon="{Binding Selected.Value}"
-                        IconVariant="{Binding IconVariant}" />
-                    <StackPanel
+                        IconVariant="{Binding IconVariant}"
+                        Symbol="{Binding Selected.Value}" />
+                    <Grid
                         HorizontalAlignment="Center"
-                        Orientation="Horizontal"
-                        Spacing="12">
-                        <StackPanel>
-                            <icons:FluentIcon
-                                FontSize="64"
-                                Icon="{Binding Selected.Value}"
-                                IconVariant="Regular" />
-                            <TextBlock
-                                HorizontalAlignment="Center"
-                                Foreground="{DynamicResource SemiColorText2}"
-                                Text="Regular" />
-                        </StackPanel>
-                        <StackPanel>
-                            <icons:FluentIcon
-                                FontSize="64"
-                                Icon="{Binding Selected.Value}"
-                                IconVariant="Filled" />
-                            <TextBlock
-                                HorizontalAlignment="Center"
-                                Foreground="{DynamicResource SemiColorText2}"
-                                Text="Filled" />
-                        </StackPanel>
-                        <StackPanel>
-                            <icons:FluentIcon
-                                FontSize="64"
-                                Icon="{Binding Selected.Value}"
-                                IconVariant="Color" />
-                            <TextBlock
-                                HorizontalAlignment="Center"
-                                Foreground="{DynamicResource SemiColorText2}"
-                                Text="Color" />
-                        </StackPanel>
-                        <StackPanel>
-                            <icons:FluentIcon
-                                FontSize="64"
-                                Icon="{Binding Selected.Value}"
-                                IconVariant="Light" />
-                            <TextBlock
-                                HorizontalAlignment="Center"
-                                Foreground="{DynamicResource SemiColorText2}"
-                                Text="Light" />
-                        </StackPanel>
-
-                    </StackPanel>
-
+                        ColumnDefinitions="*,*,*,*"
+                        ColumnSpacing="24"
+                        RowDefinitions="Auto, Auto"
+                        RowSpacing="12">
+                        <Grid.Styles>
+                            <Style Selector="icons|SymbolIcon.IconPreviewStyle">
+                                <Setter Property="FontSize" Value="64" />
+                                <Setter Property="Symbol" Value="{Binding Selected.Value}" />
+                                <Setter Property="HorizontalAlignment" Value="Center" />
+                            </Style>
+                        </Grid.Styles>
+                        <icons:SymbolIcon
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Classes="IconPreviewStyle"
+                            IconVariant="Regular"
+                            Symbol="{Binding Selected.Value}" />
+                        <TextBlock
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            HorizontalAlignment="Center"
+                            Foreground="{DynamicResource SemiColorText2}"
+                            Text="Regular" />
+                        <icons:SymbolIcon
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            Classes="IconPreviewStyle"
+                            IconVariant="Filled" />
+                        <TextBlock
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            HorizontalAlignment="Center"
+                            Foreground="{DynamicResource SemiColorText2}"
+                            Text="Filled" />
+                        <icons:SymbolIcon
+                            Grid.Row="0"
+                            Grid.Column="2"
+                            Classes="IconPreviewStyle"
+                            IconVariant="Color" />
+                        <TextBlock
+                            Grid.Row="1"
+                            Grid.Column="2"
+                            HorizontalAlignment="Center"
+                            Foreground="{DynamicResource SemiColorText2}"
+                            Text="Color" />
+                        <icons:SymbolIcon
+                            Grid.Row="0"
+                            Grid.Column="3"
+                            Classes="IconPreviewStyle"
+                            IconVariant="Light" />
+                        <TextBlock
+                            Grid.Row="1"
+                            Grid.Column="3"
+                            HorizontalAlignment="Center"
+                            Foreground="{DynamicResource SemiColorText2}"
+                            Text="Light" />
+                    </Grid>
                 </StackPanel>
-
             </ScrollViewer>
-
         </Grid>
     </Grid>
-
 </UserControl>
